@@ -1,0 +1,26 @@
+---
+title: "assignment2"
+author: "Lucas Schiffer"
+date: "October 19, 2016"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{assignment2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+
+
+## Methods
+
+
+
+## Results
+
+
+
+## Discussion
+
+
