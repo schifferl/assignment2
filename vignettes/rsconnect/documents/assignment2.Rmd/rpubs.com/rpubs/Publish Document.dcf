@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/220078/4c1ce6f127b0456ebede7a3bdc1b41a1
+bundleId: https://api.rpubs.com/api/v1/document/220078/4c1ce6f127b0456ebede7a3bdc1b41a1
+url: http://rpubs.com/schifferl/220078
+when: 1476914552.59935
