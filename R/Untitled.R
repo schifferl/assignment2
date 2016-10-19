@@ -25,17 +25,19 @@ model_a <- read_csv("./inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   filter(law == "< 1996") %>%
   glm.nb(suicidetotal ~ year + offset(log(personyearsatrisk)), data = .)
 
-coef(model_a) %>% exp() %>% round(digits = 3) %>% gat
-confint(model_a) %>% exp() %>% round(digits = 3)
+estimate <- coef(model_a) %>% exp() %>% round(digits = 3) %>% matrix()
+confint <- confint(model_a) %>% exp() %>% round(digits = 3)
+cbind(estimate, confint)
 
-model_b <- read_csv("./inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
-mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
-mutate(law = as.factor(law)) %>%
-filter(law == "> 1996") %>%
-glm.nb(suicidetotal ~ year + offset(log(personyearsatrisk)), data = .)
+model_a <- read_csv("./inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
+  mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
+  mutate(law = as.factor(law)) %>%
+  filter(law == "> 1996") %>%
+  glm.nb(suicidetotal ~ year + offset(log(personyearsatrisk)), data = .)
 
-coef(model_b) %>% exp() %>% round(digits = 3)
-confint(model_b) %>% exp() %>% round(digits = 3)
+estimate <- coef(model_b) %>% exp() %>% round(digits = 3) %>% matrix()
+confint <- confint(model_b) %>% exp() %>% round(digits = 3)
+cbind(estimate, confint)
 
 model_c <- read_csv("./inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
 mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
@@ -43,5 +45,6 @@ mutate(law = as.factor(law)) %>%
 mutate(year = year - 1996) %>%
 glm.nb(suicidetotal ~ year + law + year * law + offset(log(personyearsatrisk)), data = .)
 
-coef(model_c) %>% exp() %>% round(digits = 3)
-confint(model_c) %>% exp() %>% round(digits = 3)
+estimate <- coef(model_c) %>% exp() %>% round(digits = 3) %>% matrix()
+confint <- confint(model_c) %>% exp() %>% round(digits = 3)
+cbind(estimate, confint)
