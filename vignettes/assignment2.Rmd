@@ -2,15 +2,17 @@
 title: "assignment2"
 author: "Lucas Schiffer"
 date: "October 19, 2016"
-output:
-  html_document:
-    fig_width: 12
-    fig_height: 8
+output: html_document
 vignette: >
   %\VignetteIndexEntry{assignment2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+css: style.css
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = "center")
+```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(readr)
@@ -30,8 +32,9 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
 ## Table 2
 ```{r,  message=FALSE, warning=FALSE}
 read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
+  rename(Year = year) %>% 
   mutate(rate = round(suicidetotal / personyearsatrisk * 100000, 2)) %>%
-  group_by(year) %>%
+  group_by(Year) %>%
   summarise("No." = suicidetotal, "Crude Rate per 100 000 Population" =  rate) %>%
   kable(caption = "Suicide Total Deaths")
 ```
@@ -39,9 +42,10 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
 # Figure I
 ```{r, message=FALSE, warning=FALSE}
 read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
+  rename(Year = year) %>%
   mutate(rate = suicidetotal / personyearsatrisk) %>%
-  mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>% 
-  ggplot(aes(year, rate * 100000)) +
+  mutate(law = ifelse(Year > 1996, "> 1996", "< 1996")) %>% 
+  ggplot(aes(Year, rate * 100000)) +
     geom_point(aes(colour = factor(law))) +
     geom_line(aes(colour = factor(law))) +
     geom_smooth(aes(colour = factor(law)), method = lm) +
@@ -55,38 +59,43 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
 ## Model A
 ```{r, message=FALSE, warning=FALSE}
 model_a <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
-  mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
+  rename(Year = year) %>% 
+  mutate(law = ifelse(Year > 1996, "> 1996", "< 1996")) %>%
   mutate(law = as.factor(law)) %>%
   filter(law == "< 1996") %>%
-  glm.nb(suicidetotal ~ year + offset(log(personyearsatrisk)), data = .)
+  glm.nb(suicidetotal ~ Year + offset(log(personyearsatrisk)), data = .)
 
-estimate <- coef(model_a) %>% exp() %>% round(digits = 3) %>% matrix()
-confint <- confint(model_a) %>% exp() %>% round(digits = 3)
-cbind(estimate, confint) %>% kable()
+estimate <- coef(model_a) %>% exp() %>% matrix()
+estimate <- estimate[-1, , drop = FALSE]
+confint <- confint(model_a) %>% exp()
+confint <- confint[-1, , drop = FALSE]
+cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE), align = "l")
 ```
 
 ## Model B
 ```{r, message=FALSE, warning=FALSE}
 model_b <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
-  mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
+  rename(Year = year) %>%
+  mutate(law = ifelse(Year > 1996, "> 1996", "< 1996")) %>%
   mutate(law = as.factor(law)) %>%
   filter(law == "> 1996") %>%
-  glm.nb(suicidetotal ~ year + offset(log(personyearsatrisk)), data = .)
+  glm.nb(suicidetotal ~ Year + offset(log(personyearsatrisk)), data = .)
 
-estimate <- coef(model_b) %>% exp() %>% round(digits = 3) %>% matrix()
-confint <- confint(model_b) %>% exp() %>% round(digits = 3)
-cbind(estimate, confint) %>% kable()
+estimate <- coef(model_b) %>% exp() %>% matrix()
+confint <- confint(model_b) %>% exp()
+cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
 ## Model C
 ```{r, message=FALSE, warning=FALSE}
 model_c <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
-mutate(law = ifelse(year > 1996, "> 1996", "< 1996")) %>%
+  rename(Year = year) %>%
+mutate(law = ifelse(Year > 1996, " > 1996", " < 1996")) %>%
 mutate(law = as.factor(law)) %>%
-mutate(year = year - 1996) %>%
-glm.nb(suicidetotal ~ year + law + year * law + offset(log(personyearsatrisk)), data = .)
+mutate(Year = Year - 1996) %>%
+glm.nb(suicidetotal ~ Year + law + Year * law + offset(log(personyearsatrisk)), data = .)
 
-estimate <- coef(model_c) %>% exp() %>% round(digits = 3) %>% matrix()
-confint <- confint(model_c) %>% exp() %>% round(digits = 3)
-cbind(estimate, confint) %>% kable()
+estimate <- coef(model_c) %>% exp() %>% matrix()
+confint <- confint(model_c) %>% exp()
+cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE))
 ```
