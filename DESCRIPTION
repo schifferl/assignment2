@@ -8,8 +8,8 @@ Depends:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/schifferl/assignment1
-BugReports: https://github.com/schifferl/assignment1/issues
+URL: https://github.com/schifferl/assignment2
+BugReports: https://github.com/schifferl/assignment2/issues
 Suggests:
     knitr,
     rmarkdown,
