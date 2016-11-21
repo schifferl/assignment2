@@ -4,3 +4,13 @@ p {
   text-align: justify;
 }
 
+table > thead > tr > th:last-child {
+  text-align: right;
+}
+
+.caption {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #b3b3b3;
+    text-align: left;
+}

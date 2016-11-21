@@ -1,6 +1,6 @@
 Package: assignment2
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Title: CUNY GSPHHP BIOS 621 Assignment 2
+Version: 1.0.0
 Authors@R: person("Lucas", "Schiffer", email = "schiffer.lucas@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends:

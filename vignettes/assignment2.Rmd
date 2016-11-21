@@ -12,6 +12,7 @@ css: style.css
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -23,24 +24,49 @@ library(ggplot2)
 library(MASS)
 ```
 
-## EDA
-```{r, message=FALSE, warning=FALSE}
-read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
-  glimpse()
-```
+## Introduction
 
-## Table 2
-```{r,  message=FALSE, warning=FALSE}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim ipsum neque, in euismod nunc dignissim quis. Cras suscipit, leo eget auctor tincidunt, ipsum nulla rhoncus nunc, vitae ultrices lacus mi a libero. Morbi mollis nisi dolor, at fermentum nunc imperdiet nec. Vestibulum ultrices finibus magna, at condimentum dui vehicula vel. Curabitur mattis fermentum interdum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ut tellus mauris. Curabitur porta lacinia ante. Pellentesque vestibulum sapien ut diam fringilla, sit amet molestie lorem scelerisque. Phasellus a feugiat magna. Morbi accumsan risus non commodo tristique. Cras luctus varius sem nec pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur vitae ipsum efficitur, lacinia orci vitae, mattis justo.^[Chapman, S., Alpers, P. & Jones, M. Association Between Gun Law Reforms and Intentional Firearm Deaths in Australia, 1979-2013. JAMA 316, 291–299 (2016).]
+
+
+## Methods
+
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+<p class = "caption">Model A - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-1996</p>
+
+$$ln(E[Y_i])=ln(n_i)+\beta_{0,0}+\beta_{1,0}year_i+e_i,i=1979,...,1996$$
+
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+<p class = "caption">Model B - Total Firearm and Nonfirearm Suicide Deaths, Australia 1997-2013</p>
+
+$$ln(E[Y_i])=ln(n_i)+\beta_{0,1}+\beta_{1,1}year_i+e_i,i=1997,...,2013$$
+
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+<p class = "caption">Model C - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-2013</p>
+
+$$ln(E[Y_i])=ln(n_i)+\beta_{0,2}+\beta_{1,2}year_i+\beta_{2,2}law_i+\beta_{3,2}year_i\times law_i+e_i,i=1979,...,2013$$
+
+## Results
+
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   rename(Year = year) %>% 
   mutate(rate = round(suicidetotal / personyearsatrisk * 100000, 2)) %>%
   group_by(Year) %>%
-  summarise("No." = suicidetotal, "Crude Rate per 100 000 Population" =  rate) %>%
-  kable(caption = "Suicide Total Deaths")
+  summarise("No." = suicidetotal, "Crude Rate per 100,000 Population" =  rate) %>%
+  kable(align = "llr", caption = "Table 2 - Suicide Total Deaths", format.args = list(big.mark = ","))
 ```
 
-# Figure I
-```{r, message=FALSE, warning=FALSE}
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+<p class = "caption">Figure 1 - Total Firearm and Nonfirearm Suicide Deaths</p>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   rename(Year = year) %>%
   mutate(rate = suicidetotal / personyearsatrisk) %>%
@@ -49,15 +75,16 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
     geom_point(aes(colour = factor(law))) +
     geom_line(aes(colour = factor(law))) +
     geom_smooth(aes(colour = factor(law)), method = lm) +
-    labs(title = "Total firearm and nonfirearm suicide deaths",
+    labs(title = "Total Firearm and Nonfirearm Suicide Deaths",
          x = "Calendar Year",
-         y = "Total Suicide Deaths per 100 000 Population",
-         colour = "")
+         y = "Total Suicide Deaths per 100,000 Population",
+         colour = "") +
+    theme(plot.title = element_text(hjust=0.5))
 ```
 
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
 
-## Model A
-```{r, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_a <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   rename(Year = year) %>% 
   mutate(law = ifelse(Year > 1996, "> 1996", "< 1996")) %>%
@@ -69,11 +96,14 @@ estimate <- coef(model_a) %>% exp() %>% matrix()
 estimate <- estimate[-1, , drop = FALSE]
 confint <- confint(model_a) %>% exp()
 confint <- confint[-1, , drop = FALSE]
-cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE), align = "l")
+pvalue <- summary(model_a) %>% coefficients() %>% .[-1, 4] %>% round(3) %>% ifelse(. < 0.001, "< 0.001", .)
+data.frame(estimate, confint, pvalue) %>%
+  kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model A - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-1996", format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
-## Model B
-```{r, message=FALSE, warning=FALSE}
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_b <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   rename(Year = year) %>%
   mutate(law = ifelse(Year > 1996, "> 1996", "< 1996")) %>%
@@ -82,20 +112,39 @@ model_b <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   glm.nb(suicidetotal ~ Year + offset(log(personyearsatrisk)), data = .)
 
 estimate <- coef(model_b) %>% exp() %>% matrix()
+estimate <- estimate[-1, , drop = FALSE]
 confint <- confint(model_b) %>% exp()
-cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE))
+confint <- confint[-1, , drop = FALSE]
+pvalue <- summary(model_b) %>% coefficients() %>% .[-1, 4] %>% round(3) %>% ifelse(. < 0.001, "< 0.001", .)
+data.frame(estimate, confint, pvalue) %>%
+  kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model B - Total Firearm and Nonfirearm Suicide Deaths, Australia 1997-2013", format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
-## Model C
-```{r, message=FALSE, warning=FALSE}
+Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_c <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   rename(Year = year) %>%
-mutate(law = ifelse(Year > 1996, " > 1996", " < 1996")) %>%
-mutate(law = as.factor(law)) %>%
+mutate(Law = ifelse(Year > 1996, " > 1996", " < 1996")) %>%
+mutate(Law = as.factor(Law)) %>%
 mutate(Year = Year - 1996) %>%
-glm.nb(suicidetotal ~ Year + law + Year * law + offset(log(personyearsatrisk)), data = .)
+glm.nb(suicidetotal ~ Year + Law + Year * Law + offset(log(personyearsatrisk)), data = .)
 
 estimate <- coef(model_c) %>% exp() %>% matrix()
+estimate <- estimate[-1, , drop = FALSE]
 confint <- confint(model_c) %>% exp()
-cbind(estimate, confint) %>% kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit"), format.args = list(nsmall = 3, scientific = FALSE))
+confint <- confint[-1, , drop = FALSE]
+pvalue <- summary(model_c) %>% coefficients() %>% .[-1, 4] %>% round(3) %>% ifelse(. < 0.001, "< 0.001", .)
+data.frame(estimate, confint, pvalue) %>%
+  kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model C - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-2013", format.args = list(nsmall = 3, scientific = FALSE))
 ```
+
+Curabitur et rhoncus felis, id facilisis tellus. Fusce fermentum nisl eu sem convallis, at cursus est tristique. Maecenas non ante mi. Sed aliquam tincidunt pharetra. Nunc in ipsum dolor. Pellentesque scelerisque libero nec libero vehicula aliquet. Nullam sed neque vel turpis egestas auctor. Sed congue libero id nunc placerat, et molestie libero malesuada. Cras mollis dui a scelerisque accumsan.
+
+## Discussion
+
+Phasellus eu mollis odio. Etiam tincidunt eu est nec semper. Nulla bibendum enim purus, sit amet luctus lacus rhoncus non. Vivamus quis dignissim risus. Maecenas rhoncus imperdiet nulla sed congue. Duis id lacus felis. Aenean maximus accumsan urna. Etiam aliquam tortor justo, ut tempus orci sollicitudin ut. Fusce tristique enim ex, ac efficitur ipsum tincidunt vitae. Phasellus a imperdiet nisi, sit amet mattis dui. Nulla elementum pretium mi, at laoreet lectus semper nec. Proin vehicula a arcu in efficitur. Curabitur et fringilla ipsum.
+
+Proin in pharetra erat. Proin ullamcorper ligula sapien. Aenean dapibus justo ante, quis scelerisque est tincidunt ac. Nam eget felis nec metus tincidunt convallis. Donec lacinia tellus at dictum interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse potenti. Mauris nec leo feugiat, blandit metus eget, gravida turpis. Phasellus consectetur lorem ut justo pellentesque volutpat. Donec a risus eu neque consequat scelerisque. In maximus urna ante, sed pharetra felis tincidunt et.
+
+## References
