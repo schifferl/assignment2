@@ -26,32 +26,37 @@ library(MASS)
 
 ## Introduction
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim ipsum neque, in euismod nunc dignissim quis. Cras suscipit, leo eget auctor tincidunt, ipsum nulla rhoncus nunc, vitae ultrices lacus mi a libero. Morbi mollis nisi dolor, at fermentum nunc imperdiet nec. Vestibulum ultrices finibus magna, at condimentum dui vehicula vel. Curabitur mattis fermentum interdum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ut tellus mauris. Curabitur porta lacinia ante. Pellentesque vestibulum sapien ut diam fringilla, sit amet molestie lorem scelerisque. Phasellus a feugiat magna. Morbi accumsan risus non commodo tristique. Cras luctus varius sem nec pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur vitae ipsum efficitur, lacinia orci vitae, mattis justo.^[Chapman, S., Alpers, P. & Jones, M. Association Between Gun Law Reforms and Intentional Firearm Deaths in Australia, 1979-2013. JAMA 316, 291–299 (2016).]
-
+In the twenty years that followed Australia’s 1996 federal and state buyback of semiautomatic rifles, overall deaths due to firearms declined significantly. Given the sufficient passage of time for the effects of regulatory changes to manifest, authors Chapman, Alpers, and Jones revisited the data to test 2 specific hypotheses: (1) whether the rate of decline in firearm-related deaths accelerated after the introduction of gun control laws in 1996 and (2) whether there was a step change in which the mortality rate increased or decreased immediately after the introduction of gun control laws.^[Chapman, S., Alpers, P. & Jones, M. Association Between Gun Law Reforms and Intentional Firearm Deaths in Australia, 1979-2013. JAMA 316, 291–299 (2016).] While an extensive and exhaustive set of negative binomial models were tested, little in the way of assessment of model fit or comparison to Poisson models was offered. As such, a reconstruction of the original article’s tables and figures, as relate to total firearm and nonfirearm suicide deaths, is attempted here, in addition to the assessment of model fit and the comparison to Poisson models.
 
 ## Methods
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+To reproduce the results as given in the original article’s tables and figures, a table of suicide total deaths was first constructed from the dataset that was provided by Levi Waldron, PhD. Comparison between the data given for reproduction and that published by Chapman, Alpers, and Jones was made for all years 1979 to 2013 for both the raw number of suicide total deaths and the crude rate per 100,000 population. The crude rates of suicide total deaths were then plotted as two distinct sets of points, those before 1996 and those after 1996. A least squares linear regression model was then plotted in conjunction with the points to illustrate the overall trend and a smoothing function was added to illustrate confidence intervals.
+
+Once the original article’s table 2 and figure 1 A were successfully reproduced, three negative binomial models were specified to reproduce the results of table 3. In all cases the outcome modeled was the expected value of predicted suicide total deaths, as was modeled but not specified in the original article. 
+
+First, model A was constructed using the offset of person years at risk, setting time zero as 1996, and included beta terms for the intercept and the year of calendar time for years 1979 to 1996, as well as an error term.
 
 <p class = "caption">Model A - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-1996</p>
 
 $$ln(E[Y_i])=ln(n_i)+\beta_{0,0}+\beta_{1,0}year_i+e_i,i=1979,...,1996$$
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Second, model B was constructed identically to model A to the exception of the interval of calendar time, with model B incorporating years 1997 to 2013.
 
 <p class = "caption">Model B - Total Firearm and Nonfirearm Suicide Deaths, Australia 1997-2013</p>
 
 $$ln(E[Y_i])=ln(n_i)+\beta_{0,1}+\beta_{1,1}year_i+e_i,i=1997,...,2013$$
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Third, model C was constructed using the offset of person years at risk, setting time zero as 1996, and included beta terms for the intercept, the year of calendar time for years 1979 to 2013, the binary variable related to the passage gun regulations, and the interaction between the year of calendar time and the passage of gun regulations, as well as an error term. 
 
 <p class = "caption">Model C - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-2013</p>
 
 $$ln(E[Y_i])=ln(n_i)+\beta_{0,2}+\beta_{1,2}year_i+\beta_{2,2}law_i+\beta_{3,2}year_i\times law_i+e_i,i=1979,...,2013$$
 
+The construction of all tables, models, and plots was done in RStudio (1.0.44) using R version 3.3.2.
+
 ## Results
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Using the provided data it was possible to reproduce table 2 as published by Chapman, Alpers, and Jones in its entirety for all years from 1979 to 2013 for both the raw number of suicide total deaths and the crude rate per 100,000 population. Regarding suicide total deaths, there was minimum value of 1628, a maximum value of 2647, a first quartile of 2058, a third quartile of 2402, a mean of 2196, and a median of 2255. Regarding crude the rate of suicide total deaths per 100,000 population, there was minimum value of 10.39, a maximum value of 14.37, a first quartile of 11.04, a third quartile of 12.90, a mean of 11.99, and a median of 11.65. The figures for all years are provided below in table 2.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
@@ -59,10 +64,10 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
   mutate(rate = round(suicidetotal / personyearsatrisk * 100000, 2)) %>%
   group_by(Year) %>%
   summarise("No." = suicidetotal, "Crude Rate per 100,000 Population" =  rate) %>%
-  kable(align = "llr", caption = "Table 2 - Suicide Total Deaths", format.args = list(big.mark = ","))
+  kable(align = "llr", caption = "Table 2 - Suicide Total Deaths")
 ```
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+The data points, when plotted, become illustrative of the impact of the gun regulations, specifically where the years prior and post 1996 are plotted separately. As figure 1 shows, the trend of suicide total deaths is increasing in all years from 1979 to 1996 and decreasing for all years from 1997 to 2013, both a regression line and confidence bands are added for clarity. While trends are readily apparent, it was necessary to perform statistical testing using the model specifications to establish their significance.
 
 <p class = "caption">Figure 1 - Total Firearm and Nonfirearm Suicide Deaths</p>
 
@@ -82,7 +87,7 @@ read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
     theme(plot.title = element_text(hjust=0.5))
 ```
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Given model A, the year of calendar time was found to be significantly correlated with suicide total deaths, with mean yearly increases of suicide total deaths estimated to be 1.0% (95% CI, 1.006 - 1.014; P, < 0.001).
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_a <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
@@ -101,7 +106,7 @@ data.frame(estimate, confint, pvalue) %>%
   kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model A - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-1996", format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Similar results were found for model B, the year of calendar time was found to be significantly correlated with suicide total deaths, with mean yearly decreases of suicide total deaths estimated to be 1.5% (95% CI, 0.979 - 0.991; P, < 0.001).
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_b <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
@@ -120,7 +125,7 @@ data.frame(estimate, confint, pvalue) %>%
   kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model B - Total Firearm and Nonfirearm Suicide Deaths, Australia 1997-2013", format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
-Sed metus auctor, interdum justo ut, tempus mi. Etiam feugiat lectus id arcu viverra lacinia. Suspendisse potenti. Cras eu nunc non mi posuere mollis at vel ante. Nullam consequat ligula quis diam efficitur, eget aliquet tellus porttitor. Morbi varius quam eget urna viverra maximus. Quisque ac rutrum nunc, ut euismod risus.
+Given model C, it was possible to test both the ratio of trends and the step change occurring in 1996. The ratio of trends, as modeled by the interaction term between the year of calendar time and the binary variable specifying gun regulation, was found to be significant with the estimate being 0.975 (95% CI, 0.968 - 0.982; P, < 0.001). This estimate can be interpreted to mean there were few suicide total deaths following gun regulation and that the difference in trends was highly significant. The step change however, as modeled by the binary variable specifying gun regulation, was not found to be significant and test statistics produced a wide confidence interval. This suggest it was not gun regulation alone that produced the decline in suicide total deaths and given the estimate of 1.004 (95% CI, 0.931 - 1.083; P, 0.921), the evidence suggest gun regulation may have even increased suicide total deaths.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 model_c <- read_csv("../inst/extdata/AUdeaths_corrected_10-11-2016.csv") %>%
@@ -139,12 +144,14 @@ data.frame(estimate, confint, pvalue) %>%
   kable(digits = 3, col.names = c("Estimate", "95% CI Lower Limit", "95% CI Upper Limit", "P-Value"), align = "lllr", caption = "Model C - Total Firearm and Nonfirearm Suicide Deaths, Australia 1979-2013", format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
-Curabitur et rhoncus felis, id facilisis tellus. Fusce fermentum nisl eu sem convallis, at cursus est tristique. Maecenas non ante mi. Sed aliquam tincidunt pharetra. Nunc in ipsum dolor. Pellentesque scelerisque libero nec libero vehicula aliquet. Nullam sed neque vel turpis egestas auctor. Sed congue libero id nunc placerat, et molestie libero malesuada. Cras mollis dui a scelerisque accumsan.
+However, it is noted that given the highly insignificant P value of 0.921 such inference cannot be drawn and lacks merit as evidence to suggest that guns are protective against increases in suicide total deaths.
 
 ## Discussion
 
-Phasellus eu mollis odio. Etiam tincidunt eu est nec semper. Nulla bibendum enim purus, sit amet luctus lacus rhoncus non. Vivamus quis dignissim risus. Maecenas rhoncus imperdiet nulla sed congue. Duis id lacus felis. Aenean maximus accumsan urna. Etiam aliquam tortor justo, ut tempus orci sollicitudin ut. Fusce tristique enim ex, ac efficitur ipsum tincidunt vitae. Phasellus a imperdiet nisi, sit amet mattis dui. Nulla elementum pretium mi, at laoreet lectus semper nec. Proin vehicula a arcu in efficitur. Curabitur et fringilla ipsum.
+Overall, it was possible to reproduce the results of Chapman, Alpers, and Jones entirely and exactly, using the provided data. Exploratory data analysis occurred through the reproduction of table 2, whereby it was possible to verify the yearly counts and rates such that further modeling and testing would be enabled. Similarly, the reconstruction of figure 1 A served as a validity check in comparison to the original article, providing a visual proof of similarity between the two graphics. Although, in the reproduced figure 1 A a number of enhancements were added for clarity, those being 95% confidence bands and a regression line. 
 
-Proin in pharetra erat. Proin ullamcorper ligula sapien. Aenean dapibus justo ante, quis scelerisque est tincidunt ac. Nam eget felis nec metus tincidunt convallis. Donec lacinia tellus at dictum interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse potenti. Mauris nec leo feugiat, blandit metus eget, gravida turpis. Phasellus consectetur lorem ut justo pellentesque volutpat. Donec a risus eu neque consequat scelerisque. In maximus urna ante, sed pharetra felis tincidunt et.
+In regards to model specification, it was necessary to deviate slightly from the original article in order to achieve the same results. There was a disparity between the models that were specified and used in the original article, as models should have used expected suicide total deaths as the outcome in specification. Correctly specified models, as shown in the reproduction were used in both the original and herein but were not given within the text of the original article. Given these models, all estimates and statistical test were reproduced entirely and exactly, using the provided data.
+
+Finally, it was observed that the original article failed to provide an assessment of model fit and/or a comparison to Poisson models. Inherent to negative binomial models is the assumption of low dispersion, which was not immediately evident in figure 1 A. Comparatively, nor is the assumption of Poisson models that the mean is equal to the variance readily apparent, given the large number of outliers evident in figure 1 A that would have lead to variance likely greater than the mean. In a comparison of the two model types, the specifics of which are not shown herein, it was found that the negative binomial model was a better fit for the data, as given by maximum likelihood estimation and a likelihood-ratio test. Future reproductions of the Chapman, Alpers, and Jones article would do well to further assess model fit through diagnostics such as leverage and residual plots.
 
 ## References
